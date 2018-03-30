@@ -3,6 +3,11 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
+from viewflow.models import Process
+
+
+class MyPizzaProcess(Process):
+    content = models.TextField()
 
 
 class Order(models.Model):
