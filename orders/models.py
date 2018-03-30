@@ -6,21 +6,17 @@ from django.db import models
 from viewflow.models import Process
 
 
-class MyPizzaProcess(Process):
-    content = models.TextField()
-
-
 class Order(models.Model):
     content = models.TextField()
     last_updated_on = models.DateTimeField(auto_now=True)
 
-    waiter = models.ForeignKey(User, related_name='waiters',
-                               null=True, blank=True)
+    waiter = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='waiters', null=True, blank=True)
     take_the_order_start = models.DateTimeField(null=True, blank=True)
     take_the_order_end = models.DateTimeField(null=True, blank=True)
 
-    chef = models.ForeignKey(User, related_name='chefs',
-                             null=True, blank=True)
+    chef = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='chefs', null=True, blank=True)
     prepare_pizza_start = models.DateTimeField(null=True, blank=True)
     prepare_pizza_end = models.DateTimeField(null=True, blank=True)
 
@@ -32,3 +28,9 @@ class Order(models.Model):
 
     eat_pizza_start = models.DateTimeField(null=True, blank=True)
     eat_pizza_end = models.DateTimeField(null=True, blank=True)
+
+
+class MyPizzaProcess(Process):
+    content = models.TextField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,
+                              null=True, blank=True)

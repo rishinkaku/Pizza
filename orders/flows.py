@@ -3,6 +3,7 @@ from viewflow.base import Flow, this
 from viewflow.flow.views import CreateProcessView, UpdateProcessView
 
 from .models import MyPizzaProcess, Order
+from .views import TakeTheOrderView
 
 
 @frontend.register
@@ -28,9 +29,8 @@ class MyPizzaFlow(Flow):
     wait_15_minutes = flow.End()    # TODO
 
     take_the_order = (
-        flow.View(
-            UpdateProcessView
-        ).Next(this.prepare_pizza)
+        flow.View(TakeTheOrderView)
+        .Next(this.prepare_pizza)
     )
 
     prepare_pizza = (
@@ -47,3 +47,5 @@ class MyPizzaFlow(Flow):
         order = Order()
         order.content = activation.process.content
         order.save()
+        activation.process.order = order
+        activation.process.save()
