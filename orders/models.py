@@ -29,6 +29,11 @@ class Order(models.Model):
     eat_pizza_start = models.DateTimeField(null=True, blank=True)
     eat_pizza_end = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        permissions = (
+            ('can_take_the_order', 'Can "Take The Order"'),
+        )
+
 
 class MyPizzaProcess(Process):
     content = models.TextField()

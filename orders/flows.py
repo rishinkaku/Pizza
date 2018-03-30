@@ -6,12 +6,21 @@ from .models import MyPizzaProcess, Order
 from .views import TakeTheOrderView
 
 
+def available_in_group(group_name):
+    """Checks if user belongs to a certain group. Returns a function.
+    """
+    def _internal(user):
+        return user.groups.filter(name=group_name).exists()
+    return _internal
+
+
 @frontend.register
 class MyPizzaFlow(Flow):
     process_class = MyPizzaProcess
 
     start = (
         flow.Start(CreateProcessView, fields=['content'])
+        .Available(available_in_group('customers'))
         .Next(this.order_pizza)
     )
 
@@ -30,6 +39,7 @@ class MyPizzaFlow(Flow):
 
     take_the_order = (
         flow.View(TakeTheOrderView)
+        .Permission('users.can_take_the_order')
         .Next(this.prepare_pizza)
     )
 
