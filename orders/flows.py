@@ -2,19 +2,21 @@ from viewflow import flow, frontend
 from viewflow.base import Flow, this
 from viewflow.flow.views import CreateProcessView, UpdateProcessView
 
-from .models import MyPizzaProcess
+from .models import MyPizzaProcess, Order
 
 
 @frontend.register
 class MyPizzaFlow(Flow):
     process_class = MyPizzaProcess
 
-    # Start will be order_pizza
     start = (
-        flow.Start(
-            CreateProcessView,
-            fields=['content']
-        ).Next(this.split_after_order)
+        flow.Start(CreateProcessView, fields=['content'])
+        .Next(this.order_pizza)
+    )
+
+    order_pizza = (
+        flow.Handler(this.save_content_to_order)
+        .Next(this.split_after_order)
     )
 
     split_after_order = (
@@ -40,3 +42,8 @@ class MyPizzaFlow(Flow):
     bring_pizza = (
         flow.End()          # TODO continue
     )
+
+    def save_content_to_order(self, activation):
+        order = Order()
+        order.content = activation.process.content
+        order.save()

@@ -14,19 +14,21 @@ class Order(models.Model):
     content = models.TextField()
     last_updated_on = models.DateTimeField(auto_now=True)
 
-    waiter = models.ForeignKey(User, related_name='waiters')
-    take_the_order_start = models.DateTimeField()
-    take_the_order_end = models.DateTimeField()
+    waiter = models.ForeignKey(User, related_name='waiters',
+                               null=True, blank=True)
+    take_the_order_start = models.DateTimeField(null=True, blank=True)
+    take_the_order_end = models.DateTimeField(null=True, blank=True)
 
-    chef = models.ForeignKey(User, related_name='chefs')
-    prepare_pizza_start = models.DateTimeField()
-    prepare_pizza_end = models.DateTimeField()
+    chef = models.ForeignKey(User, related_name='chefs',
+                             null=True, blank=True)
+    prepare_pizza_start = models.DateTimeField(null=True, blank=True)
+    prepare_pizza_end = models.DateTimeField(null=True, blank=True)
 
-    bring_pizza_start = models.DateTimeField()
-    bring_pizza_end = models.DateTimeField()
+    bring_pizza_start = models.DateTimeField(null=True, blank=True)
+    bring_pizza_end = models.DateTimeField(null=True, blank=True)
 
-    receive_pizza_start = models.DateTimeField()
-    receive_pizza_end = models.DateTimeField()
+    receive_pizza_start = models.DateTimeField(null=True, blank=True)
+    receive_pizza_end = models.DateTimeField(null=True, blank=True)
 
-    eat_pizza_start = models.DateTimeField()
-    eat_pizza_end = models.DateTimeField()
+    eat_pizza_start = models.DateTimeField(null=True, blank=True)
+    eat_pizza_end = models.DateTimeField(null=True, blank=True)
