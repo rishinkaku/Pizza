@@ -1,5 +1,6 @@
 Viewflow project for the "pizza" BPMN:
 
-![Pizza BPMN](https://training-course-material.com/images/signavio/92dae25ba30542deb931f9f6c9326b51.png)
+
+See https://cawemo.com/shares/a8ffffad-a9f5-43dd-8c60-e4b38fa778f6
 
 

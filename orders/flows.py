@@ -14,6 +14,13 @@ def available_in_group(group_name):
     return _internal
 
 
+@flow.flow_func
+def trigger_triggered(activation, *args, **kwargs):
+    print("Calling trigger_triggered")
+    activation.prepare()
+    activation.done()
+
+
 @frontend.register
 class MyPizzaFlow(Flow):
     process_class = MyPizzaProcess
@@ -26,16 +33,22 @@ class MyPizzaFlow(Flow):
 
     order_pizza = (
         flow.Handler(this.save_content_to_order)
-        .Next(this.split_after_order)
+        .Next(this.external_join)
     )
 
-    split_after_order = (
-        flow.Split()
-        .Next(this.wait_15_minutes)
+    # To run this, we need to know which task we are specifically referring to
+    # This can be done by querying the database
+
+    my_trigger = (
+        flow.Function(trigger_triggered,
+                      task_loader=lambda flow_task, task: task)
+        .Next(this.external_join)
+    )
+
+    external_join = (
+        flow.Join()
         .Next(this.take_the_order)
     )
-
-    wait_15_minutes = flow.End()    # TODO
 
     take_the_order = (
         flow.View(TakeTheOrderView, fields=['table_location'])
