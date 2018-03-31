@@ -38,7 +38,7 @@ class MyPizzaFlow(Flow):
     wait_15_minutes = flow.End()    # TODO
 
     take_the_order = (
-        flow.View(TakeTheOrderView)
+        flow.View(TakeTheOrderView, fields=['table_location'])
         .Permission('users.can_take_the_order')
         .Next(this.prepare_pizza)
     )

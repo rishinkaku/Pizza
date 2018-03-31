@@ -39,3 +39,4 @@ class MyPizzaProcess(Process):
     content = models.TextField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE,
                               null=True, blank=True)
+    table_location = models.CharField(max_length=50, null=True, blank=True)
